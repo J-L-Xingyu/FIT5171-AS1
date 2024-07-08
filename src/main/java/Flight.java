@@ -1,5 +1,6 @@
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 
@@ -109,11 +110,17 @@ public class Flight {
     }
 
     private void validateDatestamp(Timestamp timestamp, String fieldName) {
+        System.out.println("5: " + timestamp);
     SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+    System.out.println("6: " + dateTimeFormat);
     dateTimeFormat.setLenient(false);
     try {
-        dateTimeFormat.format(new Date(timestamp.getTime()));
-    } catch (IllegalArgumentException e) {
+        // 直接格式化 Timestamp 对象
+        String formattedDate = dateTimeFormat.format(timestamp);
+        System.out.println("7: " + formattedDate);
+        // 尝试解析格式化后的字符串，确认其符合预期的日期时间格式
+        dateTimeFormat.parse(formattedDate);
+    } catch (ParseException e) {
         throw new IllegalArgumentException(fieldName + " must be in the correct format (DD/MM/YY HH:MM:SS).");
     }
 }
