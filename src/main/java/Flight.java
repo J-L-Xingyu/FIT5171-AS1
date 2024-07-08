@@ -12,7 +12,7 @@ public class Flight {
     
     public Flight(){}
 
-    public Flight(int flight_id, String departTo, String departFrom, String code, String company, Timestamp dateFrom,Timestamp dateTo, Airplane airplane)
+    public Flight(int flight_id, String departFrom, String departTo, String code, String company, Timestamp dateFrom,Timestamp dateTo, Airplane airplane)
     {
             this.flightID=flight_id;
             this.departTo = departTo;
