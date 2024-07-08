@@ -1,18 +1,20 @@
-public class Airplane
-{
+public class Airplane {
     private int airplaneID;
     private String airplaneModel;
     private int businessSitsNumber;
     private int economySitsNumber;
     private int crewSitsNumber;
 
-    public Airplane(int airplaneID, String airplaneModel, int businessSitsNumber, int economySitsNumber, int crewSitsNumber)
-    {
-        this.airplaneID=airplaneID;
+    public Airplane() {
+        // 默认构造函数
+    }
+
+    public Airplane(int airplaneID, String airplaneModel, int businessSitsNumber, int economySitsNumber, int crewSitsNumber) {
+        this.airplaneID = airplaneID;
         this.airplaneModel = airplaneModel;
-        this.businessSitsNumber = businessSitsNumber;
-        this.economySitsNumber = economySitsNumber;
-        this.crewSitsNumber = crewSitsNumber;
+        setBusinessSitsNumber(businessSitsNumber);
+        setEconomySitsNumber(economySitsNumber);
+        setCrewSitsNumber(crewSitsNumber);
     }
 
     public int getAirplaneID() {
@@ -36,6 +38,9 @@ public class Airplane
     }
 
     public void setBusinessSitsNumber(int businessSitsNumber) {
+        if (businessSitsNumber < 1 || businessSitsNumber > 300) {
+            throw new IllegalArgumentException("Business seats number must be in the range [1, 300]");
+        }
         this.businessSitsNumber = businessSitsNumber;
     }
 
@@ -43,8 +48,11 @@ public class Airplane
         return economySitsNumber;
     }
 
-    public void setEconomySitsNumber(int economSitsNumber) {
-        this.economySitsNumber = economSitsNumber;
+    public void setEconomySitsNumber(int economySitsNumber) {
+        if (economySitsNumber < 1 || economySitsNumber > 300) {
+            throw new IllegalArgumentException("Economy seats number must be in the range [1, 300]");
+        }
+        this.economySitsNumber = economySitsNumber;
     }
 
     public int getCrewSitsNumber() {
@@ -52,11 +60,13 @@ public class Airplane
     }
 
     public void setCrewSitsNumber(int crewSitsNumber) {
+        if (crewSitsNumber < 1 || crewSitsNumber > 300) {
+            throw new IllegalArgumentException("Crew seats number must be in the range [1, 300]");
+        }
         this.crewSitsNumber = crewSitsNumber;
     }
 
-    public String toString()
-    {
+    public String toString() {
         return "Airplane{" +
                 "model=" + getAirplaneModel() + '\'' +
                 ", business sits=" + getBusinessSitsNumber() + '\'' +
@@ -65,8 +75,8 @@ public class Airplane
                 '}';
     }
 
-	public static Airplane getAirPlaneInfo(int airplane_id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public static Airplane getAirPlaneInfo(int airplane_id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
