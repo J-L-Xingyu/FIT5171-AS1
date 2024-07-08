@@ -1,4 +1,7 @@
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+
 
 public class Flight {
     private int flightID;
@@ -12,7 +15,7 @@ public class Flight {
     
     public Flight(){}
 
-    public Flight(int flight_id, String departTo, String departFrom, String code, String company, Timestamp dateFrom,Timestamp dateTo, Airplane airplane)
+    public Flight(int flight_id, String departTo, String departFrom, String code, String company, Timestamp dateFrom,Timestamp dateTo,Airplane airplane)
     {
             this.flightID=flight_id;
             this.departTo = departTo;
@@ -22,6 +25,14 @@ public class Flight {
             this.airplane = airplane;
             this.dateTo = dateTo;
             this.dateFrom = dateFrom;
+            setFlightID(flightID);
+            setDepartTo(departTo);
+            setDepartFrom(departFrom);
+            setCode(code);
+            setCompany(company);
+            setDateFrom(dateFrom);
+            setDateTo(dateTo);
+            setAirplane(airplane);
     }
 
     public int getFlightID() {
@@ -40,6 +51,9 @@ public class Flight {
     }
 
     public void setDepartTo(String departTo) {
+        if (departTo == null || departTo.trim().isEmpty()) {
+            throw new IllegalArgumentException("Destination airport cannot be empty.");
+        }
         this.departTo = departTo;
     }
 
@@ -48,6 +62,9 @@ public class Flight {
     }
 
     public void setDepartFrom(String departFrom) {
+        if (departFrom == null || departFrom.trim().isEmpty()) {
+            throw new IllegalArgumentException("Departure airport cannot be empty.");
+        }
         this.departFrom = departFrom;
     }
 
@@ -56,6 +73,9 @@ public class Flight {
     }
 
     public void setCode(String code) {
+        if (code == null || code.trim().isEmpty()) {
+            throw new IllegalArgumentException("Flight code cannot be empty.");
+        }
         this.code = code;
     }
 
@@ -64,6 +84,9 @@ public class Flight {
     }
 
     public void setCompany(String company) {
+        if (company == null || company.trim().isEmpty()) {
+            throw new IllegalArgumentException("Airline company cannot be empty.");
+        }
         this.company = company;
     }
 
@@ -72,6 +95,7 @@ public class Flight {
     }
 
     public void setDateFrom(Timestamp dateFrom) {
+        validateDatestamp(dateFrom, "Date from");
         this.dateFrom = dateFrom;
     }
 
@@ -80,8 +104,19 @@ public class Flight {
     }
 
     public void setDateTo(Timestamp dateTo) {
+        validateDatestamp(dateTo, "Date to");
         this.dateTo = dateTo;
     }
+
+    private void validateDatestamp(Timestamp timestamp, String fieldName) {
+    SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+    dateTimeFormat.setLenient(false);
+    try {
+        dateTimeFormat.format(new Date(timestamp.getTime()));
+    } catch (IllegalArgumentException e) {
+        throw new IllegalArgumentException(fieldName + " must be in the correct format (DD/MM/YY HH:MM:SS).");
+    }
+}
 
     public void setAirplane(Airplane airplane) {
         this.airplane = airplane;
