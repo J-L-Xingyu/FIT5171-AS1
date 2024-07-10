@@ -2,6 +2,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Objects;
 
 
 public class Flight {
@@ -13,20 +14,12 @@ public class Flight {
     private Timestamp dateFrom;
     private Timestamp dateTo;
     Airplane airplane;
-    
+
     public Flight(){}
 
     public Flight(int flight_id, String departTo, String departFrom, String code, String company, Timestamp dateFrom,Timestamp dateTo,Airplane airplane)
     {
-            this.flightID=flight_id;
-            this.departTo = departTo;
-            this.departFrom = departFrom;
-            this.code = code;
-            this.company = company;
-            this.airplane = airplane;
-            this.dateTo = dateTo;
-            this.dateFrom = dateFrom;
-            setFlightID(flightID);
+            setFlightID(flight_id);
             setDepartTo(departTo);
             setDepartFrom(departFrom);
             setCode(code);
@@ -110,14 +103,11 @@ public class Flight {
     }
 
     private void validateDatestamp(Timestamp timestamp, String fieldName) {
-        System.out.println("5: " + timestamp);
     SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-    System.out.println("6: " + dateTimeFormat);
     dateTimeFormat.setLenient(false);
     try {
         // 直接格式化 Timestamp 对象
         String formattedDate = dateTimeFormat.format(timestamp);
-        System.out.println("7: " + formattedDate);
         // 尝试解析格式化后的字符串，确认其符合预期的日期时间格式
         dateTimeFormat.parse(formattedDate);
     } catch (ParseException e) {
@@ -145,4 +135,18 @@ public class Flight {
                     ", code=" + getCode() + '\'' +
                     '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Flight flight = (Flight) o;
+        return flightID == flight.flightID;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(flightID);
+    }
+
 }

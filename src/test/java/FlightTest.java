@@ -14,12 +14,8 @@ public class FlightTest {
     @BeforeEach
     void setUp() {
         airplane = new Airplane(1, "Boeing 747", 50, 200, 10);
-        dateFrom = createTimestamp("01/01/23 12:00:00");
-        dateTo = createTimestamp("02/01/23 12:00:00");
-        Date date = new Date();
-        System.out.println("-1: " + date.getTime());
-        Timestamp timestamp = new Timestamp(date.getTime());
-        System.out.println("0: " + timestamp);
+        dateFrom = DateUtils.createTimestamp("01/01/23 12:00:00");
+        dateTo =  DateUtils.createTimestamp("02/01/23 12:00:00");
     }
 
     @Test
@@ -55,12 +51,11 @@ public class FlightTest {
     }
 
     private Timestamp createIncorrectTimestamp(String dateStr) {
-        System.out.println("1: " + dateStr);
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
-        System.out.println("2: " + dateFormat);
+
     try {
-        System.out.println("3: " + dateFormat.parse(dateStr).getTime());
-        System.out.println("4: " + new Timestamp(dateFormat.parse(dateStr).getTime()));
+
         return new Timestamp(dateFormat.parse(dateStr).getTime());
     } catch (ParseException e) {
         fail("Timestamp creation failed for date: " + dateStr + "; Error: " + e.getMessage());

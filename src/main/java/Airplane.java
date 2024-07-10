@@ -5,13 +5,10 @@ public class Airplane {
     private int economySitsNumber;
     private int crewSitsNumber;
 
-    public Airplane() {
-        // 默认构造函数
-    }
 
     public Airplane(int airplaneID, String airplaneModel, int businessSitsNumber, int economySitsNumber, int crewSitsNumber) {
-        this.airplaneID = airplaneID;
-        this.airplaneModel = airplaneModel;
+        setAirplaneID(airplaneID);
+        setAirplaneModel(airplaneModel);
         setBusinessSitsNumber(businessSitsNumber);
         setEconomySitsNumber(economySitsNumber);
         setCrewSitsNumber(crewSitsNumber);
@@ -30,7 +27,12 @@ public class Airplane {
     }
 
     public void setAirplaneModel(String airplaneModel) {
-        this.airplaneModel = airplaneModel;
+        if (airplaneModel == null || airplaneModel.isEmpty()) {
+            this.airplaneModel = "";
+        }else {
+            this.airplaneModel = airplaneModel;
+        }
+
     }
 
     public int getBusinessSitsNumber() {
