@@ -12,6 +12,7 @@ public class AirplaneTest {
         assertEquals(50, airplane.getBusinessSitsNumber(), "Business Seats Number test failed");
         assertEquals(200, airplane.getEconomySitsNumber(), "Economy Seats Number test failed");
         assertEquals(10, airplane.getCrewSitsNumber(), "Crew Seats Number test failed");
+
     }
 
     @Test
