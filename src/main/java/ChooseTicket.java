@@ -28,7 +28,7 @@ public class ChooseTicket{
 	        int ticket_id = in.nextInt();
 	        
 	        //validate ticker here
-	        
+//	        1
 	        //buy ticket here
 	        buyTicket.buyTicket(ticket_id);
         }
