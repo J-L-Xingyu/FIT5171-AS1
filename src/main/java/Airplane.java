@@ -19,6 +19,9 @@ public class Airplane {
     }
 
     public void setAirplaneID(int airplaneID) {
+        if (airplaneID <= 0) {
+            throw new IllegalArgumentException("airplane ID must be greater than 0.");
+        }
         this.airplaneID = airplaneID;
     }
 

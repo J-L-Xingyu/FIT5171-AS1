@@ -6,7 +6,7 @@ public class AirplaneTest {
     @Test
     void testAirplaneCreation() {
         Airplane airplane = new Airplane(1, "Boeing 747", 50, 200, 10);
-
+        assertThrows(IllegalArgumentException.class, () -> new Airplane(-1, "Boeing 747", 50, 200, 10));
         assertEquals(1, airplane.getAirplaneID(), "Airplane ID test failed");
         assertEquals("Boeing 747", airplane.getAirplaneModel(), "Airplane Model test failed");
         assertEquals(50, airplane.getBusinessSitsNumber(), "Business Seats Number test failed");
