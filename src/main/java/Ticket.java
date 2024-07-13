@@ -11,6 +11,7 @@ public class Ticket
     private boolean status; //indicates status of ticket: if it is bought by someone or not
     Passenger passenger;
 
+    //构造函数
     public Ticket(int ticket_id,int price, Flight flight, boolean classVip, Passenger passenger)
     {
         setTicket_id(ticket_id);
@@ -25,10 +26,12 @@ public class Ticket
 
     }
 
+    //返回Ticket_id
     public int getTicket_id() {
         return ticket_id;
     }
 
+    //设置Ticket_id
     public void setTicket_id(int ticket_id) {
         if (ticket_id <= 0){
             throw new IllegalArgumentException("Ticket id must be greater than 0.");
@@ -36,8 +39,10 @@ public class Ticket
         this.ticket_id = ticket_id;
     }
 
+    //返回价格
     public int getPrice() { return price; }
 
+    //设置价格
     public void setPrice(int price)
     {
         if (price < 0){
@@ -51,6 +56,7 @@ public class Ticket
         }
     }
 
+    //增加的折扣函数
     public void applyDiscount()
     {
         if (passenger.getAge() < 15){
@@ -62,15 +68,17 @@ public class Ticket
         }
     }
 
+    //应用12%的服务税并向上取整
     public void serviceTax(){
         this.price = (int) Math.ceil(this.price * 1.12);
-        // 应用12%的服务税并向上取整
     }
 
+    //返回flight
     public Flight getFlight() {
         return flight;
     }
 
+    //设置flight
     public void setFlight(Flight flight) {
         if (flight == null) {
             throw new IllegalArgumentException("Flight cannot be null.");
@@ -81,19 +89,23 @@ public class Ticket
         this.flight = flight;
     }
 
+    //返回座位舱
     public boolean getClassVip() {
         return classVip;
     }
 
+    //设置座位舱
     public void setClassVip(boolean classVip) {
         this.classVip = classVip;
     }
 
+    //返回订票状态
     public boolean ticketStatus()
     {
         return status;
     }
 
+    //设置订票状态
     public void setTicketStatus(boolean newStatus) {
         // 检查状态是否改变，避免不必要的重新计算
         if (this.status != newStatus) {
@@ -103,10 +115,12 @@ public class Ticket
         }
     }
 
+    //返回passenger
     public Passenger getPassenger() {
         return passenger;
     }
 
+    //设置passenger
     public void setPassenger(Passenger passenger) {
         if(passenger == null){
             throw new IllegalArgumentException("Passenger cannot be null.");
@@ -117,6 +131,7 @@ public class Ticket
         this.passenger = passenger;
     }
 
+    //展示ticket信息
     public String toString()
     {
         return"Ticket{" +'\n'+
@@ -125,7 +140,7 @@ public class Ticket
                 getPassenger()+'\n'+ "Ticket was purchased=" + ticketStatus() + "\n}";
     }
 
-    //还需要改进
+    //验证乘客信息
     public void validatePassenger(Passenger passenger){
         if(passenger.getFirstName() == null){
             throw new IllegalArgumentException("Invalid first name: " + passenger.getFirstName());

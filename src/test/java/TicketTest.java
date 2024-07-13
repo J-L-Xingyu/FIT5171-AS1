@@ -28,7 +28,7 @@ class TicketTest {
     }
 
     @Test
-    @DisplayName("Test the function of set and get a ticket id.")
+    @DisplayName("Test the function of setting and getting a ticket id.")
     void testSetAndGetTicketID() {
         Ticket ticket = new Ticket(1, 1000, flight, false, passenger);
         ticket.setTicket_id(2);
@@ -39,7 +39,7 @@ class TicketTest {
     @DisplayName("Test if a ticket id is valid.")
     void TicketIDBVT() {
         Ticket ticket = new Ticket(1, 1000, flight, false, passenger);
-        //Normal boundary value analysis
+        //正常边界测试
         Exception exception1 = assertThrows(IllegalArgumentException.class, () -> {
             ticket.setTicket_id(0);
         });
@@ -55,6 +55,13 @@ class TicketTest {
         ticket.setTicket_id(Integer.MAX_VALUE);
         assertEquals(Integer.MAX_VALUE, ticket.getTicket_id());
 
+        //最坏情况的健壮性测试
+        Ticket ticket1 = new Ticket(2, 1000, flight, false, passenger);
+        ticket1.setTicket_id(Integer.MAX_VALUE);
+        ticket1.setPrice(0);
+        assertEquals(Integer.MAX_VALUE, ticket1.getTicket_id());
+        assertEquals(0, ticket1.getPrice());
+
         //特殊值
         Exception exception3 = assertThrows(IllegalArgumentException.class, () -> {
             ticket.setTicket_id(Integer.MIN_VALUE);
@@ -63,7 +70,7 @@ class TicketTest {
     }
 
     @Test
-    @DisplayName("Test the function of set and get a business class ticket.")
+    @DisplayName("Test the function of setting and getting a business class ticket.")
     void testSetAndGetClassVip() {
         Ticket ticket = new Ticket(1, 1000, flight, false, passenger);
         assertFalse(ticket.getClassVip());
@@ -72,7 +79,7 @@ class TicketTest {
     }
 
     @Test
-    @DisplayName("Test the function of set and get a ticket status.")
+    @DisplayName("Test the function of setting and getting a ticket status.")
     void testSetAndGetTicketStatus() {
         Ticket ticket = new Ticket(1, 1000, flight, false, passenger);
         ticket.setTicketStatus(true);
@@ -82,7 +89,7 @@ class TicketTest {
     }
 
     @Test
-    @DisplayName("Test the function of set and get a flight.")
+    @DisplayName("Test the function of setting and getting a flight.")
     void testSetAndGetFlight() {
         Ticket ticket = new Ticket(1, 1000, flight, false, passenger);
         Flight flight1 = new Flight(2, "Los Angeles","New York",  "LA123",
@@ -94,64 +101,86 @@ class TicketTest {
     @Test
     @DisplayName("Test if a flight is valid.")
     void testValidFlight() {
-        // 在Ticket类的setFlight()中定义了flight不能为空，以及flight中的airplane不能为空
+        // 在Ticket类的setFlight()中定义了flight不能为空
         Ticket ticket = new Ticket(1, 1000, flight, false, passenger);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             ticket.setFlight(null);
         });
         assertEquals("Flight cannot be null.", exception.getMessage());
 
-        Flight flight1 = new Flight(1, "New York", "Los Angeles", "NY123", "Monash",
-                Timestamp.valueOf("2024-07-08 10:00:00"), Timestamp.valueOf("2024-07-08 12:00:00"), null);
+        //验证flight中的airplane不能为空
         Exception exception1 = assertThrows(IllegalArgumentException.class, () -> {
-            new Ticket(1, 1000, flight1, false, passenger);
+            new Ticket(1, 1000,
+                    new Flight(1, "New York", "Los Angeles", "NY123", "Monash",
+                    Timestamp.valueOf("2024-07-08 10:00:00"), Timestamp.valueOf("2024-07-08 12:00:00"), null)
+                    , false, passenger);
         });
         assertEquals("Airplane cannot be null.", exception1.getMessage());
 
-        //在TicketTest类中验证了flight其他字段的有效性
+        //在TicketTest类中验证了flight id的有效性
         Exception exception2 = assertThrows(IllegalArgumentException.class, () -> {
-            new Flight(0, "New York", "Los Angeles", "NY123", "Monash",
-                    Timestamp.valueOf("2024-07-08 10:00:00"), Timestamp.valueOf("2024-07-08 12:00:00"), airplane);
+            new Ticket(1, 1000,
+                    new Flight(0, "New York", "Los Angeles", "NY123", "Monash",
+                    Timestamp.valueOf("2024-07-08 10:00:00"), Timestamp.valueOf("2024-07-08 12:00:00"), airplane)
+                    , false, passenger);
         });
         assertEquals("Flight ID must be greater than 0.", exception2.getMessage());
 
+        //在TicketTest类中验证了Departure的有效性
         Exception departFromException = assertThrows(IllegalArgumentException.class, () -> {
-            new Flight(1, "New York", "", "NY123", "Monash",
-                    Timestamp.valueOf("2024-07-08 10:00:00"), Timestamp.valueOf("2024-07-08 12:00:00"), airplane);
+            new Ticket(1, 1000,
+                    new Flight(1, "New York", "", "NY123", "Monash",
+                    Timestamp.valueOf("2024-07-08 10:00:00"), Timestamp.valueOf("2024-07-08 12:00:00"), airplane)
+                    , false, passenger);
         });
         assertEquals("Departure airport cannot be empty.", departFromException.getMessage());
 
+        //在TicketTest类中验证了Destination的有效性
         Exception departToException = assertThrows(IllegalArgumentException.class, () -> {
-            new Flight(1, "", "Los Angeles", "NY123", "Monash",
-                    Timestamp.valueOf("2024-07-08 10:00:00"), Timestamp.valueOf("2024-07-08 12:00:00"), airplane);
+            new Ticket(1, 1000,
+                    new Flight(1, "", "Los Angeles", "NY123", "Monash",
+                    Timestamp.valueOf("2024-07-08 10:00:00"), Timestamp.valueOf("2024-07-08 12:00:00"), airplane)
+                    , false, passenger);
         });
         assertEquals("Destination airport cannot be empty.", departToException.getMessage());
 
+        //在TicketTest类中验证了code的有效性
         Exception exception3 = assertThrows(IllegalArgumentException.class, () -> {
-            new Flight(1, "New York", "Los Angeles", "", "Monash",
-                    Timestamp.valueOf("2024-07-08 10:00:00"), Timestamp.valueOf("2024-07-08 12:00:00"), airplane);
+            new Ticket(1, 1000,
+                    new Flight(1, "New York", "Los Angeles", "", "Monash",
+                    Timestamp.valueOf("2024-07-08 10:00:00"), Timestamp.valueOf("2024-07-08 12:00:00"), airplane)
+                    , false, passenger);
         });
         assertEquals("Flight code cannot be empty.", exception3.getMessage());
 
+        //在TicketTest类中验证了company的有效性
         Exception exception4 = assertThrows(IllegalArgumentException.class, () -> {
-            new Flight(1, "New York", "Los Angeles", "NY123", "",
-                    Timestamp.valueOf("2024-07-08 10:00:00"), Timestamp.valueOf("2024-07-08 12:00:00"), airplane);
+            new Ticket(1, 1000,
+                    new Flight(1, "New York", "Los Angeles", "NY123", "",
+                    Timestamp.valueOf("2024-07-08 10:00:00"), Timestamp.valueOf("2024-07-08 12:00:00"), airplane)
+                    , false, passenger);
         });
         assertEquals("Airline company cannot be empty.", exception4.getMessage());
 
+        //在TicketTest类中验证了Departure time的有效性
         assertThrows(NullPointerException.class, () -> {
-            new Flight(1, "New York", "Los Angeles", "NY123", "Monash",
-                    null, Timestamp.valueOf("2024-07-08 12:00:00"), airplane);
+            new Ticket(1, 1000,
+                    new Flight(1, "New York", "Los Angeles", "NY123", "Monash",
+                    null, Timestamp.valueOf("2024-07-08 12:00:00"), airplane)
+                    , false, passenger);
         });
 
+        //在TicketTest类中验证了arriving time的有效性
         assertThrows(NullPointerException.class, () -> {
-            new Flight(1, "New York", "Los Angeles", "NY123", "Monash",
-                    Timestamp.valueOf("2024-07-08 10:00:00"), null, airplane);
+            new Ticket(1, 1000,
+                    new Flight(1, "New York", "Los Angeles", "NY123", "Monash",
+                    Timestamp.valueOf("2024-07-08 10:00:00"), null, airplane)
+                    , false, passenger);
         });
     }
 
     @Test
-    @DisplayName("Test the function of set and get a passenger.")
+    @DisplayName("Test the function of setting and getting a passenger.")
     void testSetAndGetPassenger() {
         Ticket ticket = new Ticket(1, 1000, flight, false, passenger);
         Passenger passenger1 = new Passenger("Wendy", "Smith", 24, "Woman",
@@ -161,106 +190,120 @@ class TicketTest {
         assertEquals(passenger1, ticket.getPassenger());
     }
 
-    //初稿
     @Test
     @DisplayName("Test if a passenger is valid.")
     void testValidPassenger() {
-        //在Ticket类的setPassenger()中定义了passenger不能为空，验证了passenger前四个字段的有效性
+        //在Ticket类的setPassenger()中定义了passenger不能为空
         Ticket ticket = new Ticket(1, 1000, flight, false, passenger);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             ticket.setPassenger(null);
         });
         assertEquals("Passenger cannot be null.", exception.getMessage());
 
+        //验证了passenger的first name的有效性
         IllegalArgumentException exception1 = assertThrows(IllegalArgumentException.class, () -> {
-            new Passenger("John3", "Doe", 30,
+            new Ticket(1, 1000, flight, false,
+                    new Passenger("John3", "Doe", 30,
                     "Man", "john.doe@example.com", "0456789123",
-                    "A12345678", "1234567890123456", 123);
+                    "A12345678", "1234567890123456", 123));
         });
         assertEquals("Invalid first name: John3", exception1.getMessage());
 
+        //验证了passenger的second name的有效性
         IllegalArgumentException exception2 = assertThrows(IllegalArgumentException.class, () -> {
-            new Passenger("John", "Doe2", 30,
+            new Ticket(1, 1000, flight, false,
+                    new Passenger("John", "Doe2", 30,
                     "Man", "john.doe@example.com", "0456789123",
-                    "A12345678", "1234567890123456", 123);
+                    "A12345678", "1234567890123456", 123));
         });
         assertEquals("Invalid second name: Doe2", exception2.getMessage());
 
+        //验证了passenger的Age的有效性
         IllegalArgumentException exception3 = assertThrows(IllegalArgumentException.class, () -> {
-            new Passenger("John", "Doe", -1,
+            new Ticket(1, 1000, flight, false,
+                    new Passenger("John", "Doe", -1,
                     "Man", "john.doe@example.com", "0456789123",
-                    "A12345678", "1234567890123456", 123);
+                    "A12345678", "1234567890123456", 123));
         });
         assertEquals("Age cannot be negative", exception3.getMessage());
 
+        //验证了passenger的gender的有效性
         IllegalArgumentException exception4 = assertThrows(IllegalArgumentException.class, () -> {
-            new Passenger("John", "Doe", 30,
+            new Ticket(1, 1000, flight, false,
+                    new Passenger("John", "Doe", 30,
                     "Male", "john.doe@example.com", "0456789123",
-                    "A12345678", "1234567890123456", 123);
+                    "A12345678", "1234567890123456", 123));
         });
         assertEquals("Invalid gender: Male", exception4.getMessage());
 
-        //在TicketTest类中验证了passenger其他字段的有效性
+        //在TicketTest类中验证了passenger的email的有效性
         IllegalArgumentException exception5 = assertThrows(IllegalArgumentException.class, () -> {
-            new Passenger("John", "Doe", 30,
+            new Ticket(1, 1000, flight, false,
+                    new Passenger("John", "Doe", 30,
                     "Man", "invalid-email", "0456789123",
-                    "A12345678", "1234567890123456", 123);
+                    "A12345678", "1234567890123456", 123));
         });
         assertEquals("Invalid email format.", exception5.getMessage());
 
+        //在TicketTest类中验证了passenger的phone number的有效性
         IllegalArgumentException exception6 = assertThrows(IllegalArgumentException.class, () -> {
-            new Passenger("John", "Doe", 30,
+            new Ticket(1, 1000, flight, false,
+                    new Passenger("John", "Doe", 30,
                     "Man", "john.doe@example.com", "invalid-phone-number",
-                    "A12345678", "1234567890123456", 123);
+                    "A12345678", "1234567890123456", 123));
         });
         assertTrue(exception6.getMessage().contains("Invalid phone number format."));
 
+        //在TicketTest类中验证了passenger的Passport的有效性
         IllegalArgumentException exception7 = assertThrows(IllegalArgumentException.class, () -> {
-            new Passenger("John", "Doe", 30,
+            new Ticket(1, 1000, flight, false,
+                    new Passenger("John", "Doe", 30,
                     "Man", "john.doe@example.com", "0456789123",
-                    "A1234567890", "1234567890123456", 123);
+                    "A1234567890", "1234567890123456", 123));
         });
         assertTrue(exception7.getMessage().contains("Passport number should not be more than 9 characters long."));
 
-
+        //在TicketTest类中验证了passenger的card number的有效性
         IllegalArgumentException exception8 = assertThrows(IllegalArgumentException.class, () -> {
-            new Passenger("John", "Doe", 30,
+            new Ticket(1, 1000, flight, false,
+                    new Passenger("John", "Doe", 30,
                     "Man", "john.doe@example.com", "0456789123",
-                    "A123456789", "", 123);
+                    "A123456789", "", 123));
         });
         assertEquals("All fields are required and must be valid.", exception8.getMessage());
 
+        //在TicketTest类中验证了passenger的security code的有效性
         IllegalArgumentException exception9 = assertThrows(IllegalArgumentException.class, () -> {
-            new Passenger("John", "Doe", 30,
+            new Ticket(1, 1000, flight, false,
+                    new Passenger("John", "Doe", 30,
                     "Man", "john.doe@example.com", "0456789123",
-                    "A12345678", "1234567890123456", -1);
+                    "A12345678", "1234567890123456", -1));
         });
         assertEquals("All fields are required and must be valid.", exception9.getMessage());
+    }
+
+    @Test
+    @DisplayName("Test the function of setting and getting a ticket price.")
+    void testSetAndGetPrice() {
+        Ticket ticket = new Ticket(1, 1000, flight, false, passenger);
+        assertEquals(1000, ticket.getPrice());
+        ticket.setPrice(1500);  // 然后设置价格，以确保状态改变能够触发税率应用
+        assertEquals(1500, ticket.getPrice());
     }
 
     @ParameterizedTest(name = "{index}: status = {0}, basePrice = {1}, expectedPrice = {2}")
     @CsvSource({
             "false, 1000, 1000",   // Ticket not sold, price should not include tax.
             "true, 2000, 2240",   // Ticket sold, price should include tax.
+            "false, 2000, 2000"
 
     })
-    @DisplayName("Test the function of set and get a ticket price.")
-    void testSetAndGetPrice(boolean status, int basePrice, int expectedPrice) {
+    @DisplayName("Ensure ticket status correctly affects the price")
+    void testTicketStatusAffectsPrice(boolean status, int basePrice, int expectedPrice) {
         Ticket ticket = new Ticket(1, basePrice, flight, false, passenger);
         ticket.setTicketStatus(status); // 先设置状态
         ticket.setPrice(basePrice);  // 然后设置价格，以确保状态改变能够触发税率应用
         assertEquals(expectedPrice, ticket.getPrice());
-    }
-
-    @Test
-    @DisplayName("Ensure ticket status correctly affects the price")
-    void testTicketStatusAffectsPrice() {
-        Ticket ticket = new Ticket(1, 2000, flight, false, passenger);
-        ticket.setTicketStatus(false);
-        ticket.setPrice(2000);  // Setting initial price without tax.
-        assertEquals(2000, ticket.getPrice(), "Price should be set without tax when not sold.");
-        ticket.setTicketStatus(true);
-        assertEquals(2000 * 1.12, ticket.getPrice(), "Service tax should be applied when ticket is sold.");
     }
 
     @Test
@@ -273,13 +316,20 @@ class TicketTest {
         });
         assertEquals("Price must not be negative.", exception.getMessage());
 
-        //Normal boundary value analysis
+        //正常边界测试
         ticket.setPrice(0);
         assertEquals(0, ticket.getPrice(), "Price is zero.");
 
         //最坏情况
-        ticket.setPrice(Integer.MAX_VALUE);
-        assertEquals(Integer.MAX_VALUE, ticket.getPrice());
+        Ticket ticket1 = new Ticket(2, 1000, flight, false, passenger);
+        ticket1.setPrice(Integer.MAX_VALUE);
+        assertEquals(Integer.MAX_VALUE, ticket1.getPrice());
+
+        //最坏情况的健壮性测试
+        Exception exception1 = assertThrows(IllegalArgumentException.class, () -> {
+            new Ticket(0, Integer.MAX_VALUE, flight, false, passenger);
+        });
+        assertEquals("Ticket id must be greater than 0.", exception1.getMessage());
 
         //特殊值
         Exception exception3 = assertThrows(IllegalArgumentException.class, () -> {

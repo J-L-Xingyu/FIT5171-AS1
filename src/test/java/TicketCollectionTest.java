@@ -1,3 +1,5 @@
+//contributed by Qianru Zhong
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,11 +52,13 @@ class TicketCollectionTest {
                 "1234561234567890", 312);
         Ticket ticket1 = new Ticket(2, 2000, flight1, false, passenger1);
 
+        //验证add函数
         ArrayList<Ticket> tickets = new ArrayList<>();
         tickets.add(ticket);
         tickets.add(ticket1);
         TicketCollection.addTickets(tickets);
 
+        //验证get函数
         assertEquals(2, tickets.size());
         assertTrue(tickets.contains(ticket1));
         assertTrue(tickets.contains(ticket));
@@ -125,33 +129,48 @@ class TicketCollectionTest {
     }
 
     @Test
-    @DisplayName("Test if a ticket is valid")
+    @DisplayName("Test if a ticket is valid.")
     void testValidateTicket() {
+        //验证了Ticket id的唯一性
+        TicketCollection.addTicket(ticket);
+        Airplane airplane1 = new Airplane(2, "Boeing 767",
+                50, 200, 10);
+        Flight flight1 = new Flight(2, "Los Angeles", "New York", "LA123",
+                "Monash", Timestamp.valueOf("2024-07-08 10:00:00"), Timestamp.valueOf("2024-07-08 12:00:00"), airplane1);
+        Passenger passenger1 = new Passenger("Wendy", "Smith", 24, "Woman",
+                "wendy.smith@monash.edu", "0456781234", "A56781234",
+                "1234561234567890", 312);
+        Ticket ticket1 = new Ticket(1, 2000, flight1, true, passenger1);
+        Exception exception0 = assertThrows(IllegalArgumentException.class, () -> {
+            TicketCollection.addTicket(ticket1);
+        });
+        assertEquals("Ticket ID 1 already exists.", exception0.getMessage());
+
+        //在TicketCollection类中定义了Ticket不能为空，
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(null);
         });
         assertEquals("Ticket cannot be null.", exception.getMessage());
 
+        //在TicketCollectionTest类中验证了Ticket的Ticket id字段的有效性
         Exception exception1 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(new Ticket(0, 1000, flight, false, passenger));
         });
         assertEquals("Ticket id must be greater than 0.", exception1.getMessage());
 
+        //在TicketCollectionTest类中验证了Ticket的Price字段的有效性
         Exception exception2 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(new Ticket(1, -1, flight, false, passenger));
         });
         assertEquals("Price must not be negative.", exception2.getMessage());
 
+        //在TicketCollectionTest类中验证了Flight的有效性
         Exception exception3 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(new Ticket(1, 1000, null, false, passenger));
         });
         assertEquals("Flight cannot be null.", exception3.getMessage());
 
-        Exception exception4 = assertThrows(IllegalArgumentException.class, () -> {
-            TicketCollection.addTicket(new Ticket(1, 1000, flight, false, null));
-        });
-        assertEquals("Passenger cannot be null.", exception4.getMessage());
-
+        //在TicketCollectionTest类中验证了Flight的Airplane字段的有效性
         Exception exception5 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(new Ticket(1, 1000,
                     new Flight(1, "New York", "Los Angeles", "NY123", "Monash",
@@ -160,7 +179,7 @@ class TicketCollectionTest {
         });
         assertEquals("Airplane cannot be null.", exception5.getMessage());
 
-        //在TicketTest类中验证了flight其他字段的有效性
+        //在TicketCollectionTest类中验证了Flight的Flight ID字段的有效性
         Exception exception6 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(new Ticket(1, 1000,
                     new Flight(0, "New York", "Los Angeles", "NY123", "Monash",
@@ -169,6 +188,7 @@ class TicketCollectionTest {
         });
         assertEquals("Flight ID must be greater than 0.", exception6.getMessage());
 
+        //在TicketCollectionTest类中验证了Flight的Departure字段的有效性
         Exception departFromException = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(new Ticket(1, 1000,
                     new Flight(1, "New York", "", "NY123", "Monash",
@@ -177,6 +197,7 @@ class TicketCollectionTest {
         });
         assertEquals("Departure airport cannot be empty.", departFromException.getMessage());
 
+        //在TicketCollectionTest类中验证了Flight的Destination字段的有效性
         Exception departToException = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(new Ticket(1, 1000,
                     new Flight(1, "", "Los Angeles", "NY123", "Monash",
@@ -185,6 +206,7 @@ class TicketCollectionTest {
         });
         assertEquals("Destination airport cannot be empty.", departToException.getMessage());
 
+        //在TicketCollectionTest类中验证了Flight的code字段的有效性
         Exception exception7 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(new Ticket(1, 1000,
                     new Flight(1, "New York", "Los Angeles", "", "Monash",
@@ -193,6 +215,7 @@ class TicketCollectionTest {
         });
         assertEquals("Flight code cannot be empty.", exception7.getMessage());
 
+        //在TicketCollectionTest类中验证了Flight的company字段的有效性
         Exception exception8 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(new Ticket(1, 1000,
                     new Flight(1, "New York", "Los Angeles", "NY123", "",
@@ -201,6 +224,7 @@ class TicketCollectionTest {
         });
         assertEquals("Airline company cannot be empty.", exception8.getMessage());
 
+        //在TicketCollectionTest类中验证了Flight的Departure time字段的有效性
         assertThrows(NullPointerException.class, () -> {
             TicketCollection.addTicket(new Ticket(1, 1000,
                     new Flight(1, "New York", "Los Angeles", "NY123", "Monash",
@@ -208,6 +232,7 @@ class TicketCollectionTest {
                     , false, passenger));
         });
 
+        //在TicketCollectionTest类中验证了Flight的arriving time字段的有效性
         assertThrows(NullPointerException.class, () -> {
             TicketCollection.addTicket(new Ticket(1, 1000,
                     new Flight(1, "New York", "Los Angeles", "NY123", "Monash",
@@ -215,6 +240,13 @@ class TicketCollectionTest {
                     , false, passenger));
         });
 
+        //在TicketCollectionTest类中验证了Ticket的Passenger字段的有效性
+        Exception exception4 = assertThrows(IllegalArgumentException.class, () -> {
+            TicketCollection.addTicket(new Ticket(1, 1000, flight, false, null));
+        });
+        assertEquals("Passenger cannot be null.", exception4.getMessage());
+
+        //在TicketCollectionTest类中验证了Passenger的first name字段的有效性
         IllegalArgumentException exception9 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(
                     new Ticket(1, 1000, flight, false,
@@ -224,6 +256,7 @@ class TicketCollectionTest {
         });
         assertEquals("Invalid first name: John3", exception9.getMessage());
 
+        //在TicketCollectionTest类中验证了Passenger的second name字段的有效性
         IllegalArgumentException exception10 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(
                     new Ticket(1, 1000, flight, false,
@@ -233,6 +266,7 @@ class TicketCollectionTest {
         });
         assertEquals("Invalid second name: Doe2", exception10.getMessage());
 
+        //在TicketCollectionTest类中验证了Passenger的age字段的有效性
         IllegalArgumentException exception11 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(
                     new Ticket(1, 1000, flight, false,
@@ -242,6 +276,7 @@ class TicketCollectionTest {
         });
         assertEquals("Age cannot be negative", exception11.getMessage());
 
+        //在TicketCollectionTest类中验证了Passenger的gender字段的有效性
         IllegalArgumentException exception12 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(
                     new Ticket(1, 1000, flight, false,
@@ -251,7 +286,7 @@ class TicketCollectionTest {
         });
         assertEquals("Invalid gender: Male", exception12.getMessage());
 
-        //在TicketTest类中验证了passenger其他字段的有效性
+        //在TicketCollectionTest类中验证了passenger的email字段的有效性
         IllegalArgumentException exception13 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(
                     new Ticket(1, 1000, flight, false,
@@ -261,6 +296,7 @@ class TicketCollectionTest {
         });
         assertEquals("Invalid email format.", exception13.getMessage());
 
+        //在TicketCollectionTest类中验证了passenger的phone number字段的有效性
         IllegalArgumentException exception14 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(
                     new Ticket(1, 1000, flight, false,
@@ -270,6 +306,7 @@ class TicketCollectionTest {
         });
         assertTrue(exception14.getMessage().contains("Invalid phone number format."));
 
+        //在TicketCollectionTest类中验证了passenger的Passport number字段的有效性
         IllegalArgumentException exception15 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(
                     new Ticket(1, 1000, flight, false,
@@ -279,7 +316,7 @@ class TicketCollectionTest {
         });
         assertTrue(exception15.getMessage().contains("Passport number should not be more than 9 characters long."));
 
-
+        //在TicketCollectionTest类中验证了passenger的card number字段的有效性
         IllegalArgumentException exception16 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(
                     new Ticket(1, 1000, flight, false,
@@ -289,6 +326,7 @@ class TicketCollectionTest {
         });
         assertEquals("All fields are required and must be valid.", exception16.getMessage());
 
+        //在TicketCollectionTest类中验证了passenger的security code字段的有效性
         IllegalArgumentException exception17 = assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(
                     new Ticket(1, 1000, flight, false,
@@ -316,6 +354,7 @@ class TicketCollectionTest {
                 "1234561234567890", 312);
         Ticket ticket1 = new Ticket(2, 2000, flight1, false, passenger1);
 
+        //验证clear函数
         ArrayList<Ticket> tickets = new ArrayList<>();
         tickets.add(ticket);
         tickets.add(ticket1);
