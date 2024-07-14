@@ -90,8 +90,8 @@ public class PersonTest {
     @Test
     public void testSetSecondName() {
         Person person = new Person("John", "Doe", 30, "Man");
-        person.setSecondName("Smith");
-        assertEquals("Smith", person.getSecondName());
+        person.setSecondName("Soop");
+        assertEquals("Soop", person.getSecondName());
     }
 
     @Test
