@@ -13,6 +13,7 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
+          distribution: 'temurin' # 你可以选择不同的JDK发行版，如 'zulu' 或 'adopt'
           java-version: '17'
 
       - name: Build with Maven
@@ -28,6 +29,7 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
+          distribution: 'temurin' # 你可以选择不同的JDK发行版，如 'zulu' 或 'adopt'
           java-version: '17'
 
       - name: Run tests with Maven
