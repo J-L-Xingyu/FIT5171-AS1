@@ -28,7 +28,7 @@ class TicketSystemTest {
         Timestamp dateFrom =  DateUtils.createTimestamp("01/01/23 12:00:00");
         Timestamp dateTo =  DateUtils.createTimestamp("02/01/23 12:00:00");
         Flight flight1 = new Flight(1, "Tokyo", "New York", "AB111", "Delta", dateFrom, dateTo, airplane);
-        Flight flight2 = new Flight(2, "Shanghai", "Beijing", "AB222", "Delta", dateFrom, dateTo, airplane);
+        Flight flight2 = new Flight(2, "Beijing", "New York", "AB222", "Delta", dateFrom, dateTo, airplane);
         Flight flight3 = new Flight(3, "Shanghai", "Tokyo", "AB333", "Delta", dateFrom, dateTo, airplane);
         newFlights.add(flight1);
         newFlights.add(flight2);
@@ -78,8 +78,29 @@ class TicketSystemTest {
     }
 
     @Test
+    @DisplayName("Test purchasing a ticket with a layover when no direct flights are available")
+    void testPurchaseTicketWithLayover() throws Exception {
+        // 捕获输出以验证预期的购买成功消息
+        outContent.reset();
+        ticketSystem.chooseTicket("New York", "Shanghai");
+        String expectedOutput = "There is special way to go there. And it is transfer way";
+        assertTrue(outContent.toString().contains(expectedOutput));
+    }
+
+    @Test
+    @DisplayName("Test purchasing a ticket when no direct or layover flights are available")
+    void testPurchaseTicketWithoutDirectOrLayover() throws Exception {
+        // 捕获输出以验证预期的错误消息
+        outContent.reset();
+        ticketSystem.chooseTicket("New York", "Los Angeles");
+        String expectedOutput = "There are no possible variants";
+        assertTrue(outContent.toString().contains(expectedOutput));
+    }
+
+
+    @Test
     @DisplayName("Test invalid passenger information")
-    void testInvalidPassengerInformation() throws Exception {
+    void testInvalidPassengerInformation(){
         // 模拟无效的用户输入（包括空值和无效格式）
         String input = "\n\n\n\n\n\n\n\n0\n\n\n"; // 注意这里的0表示不购买
         System.setIn(new ByteArrayInputStream(input.getBytes()));
@@ -91,11 +112,27 @@ class TicketSystemTest {
     @Test
     @DisplayName("Test valid passenger information")
     void testValidPassengerInformation() throws Exception {
-        String input = "John\nDoe\n30\nMan\njohn.doe@example.com\n0412345678\nA12345678\n1\n1234567890123456\n123\n"; // 输入有效信息
+        String input = "John\nDoe\n-2\nMan\njohn.doe@example.com\n0412345678\nA12345678\n1\n1234567890123456\n123\n"; // 输入有效信息
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        assertDoesNotThrow(() -> ticketSystem.buyTicket(1,in));
+        Exception exception = assertThrows(IllegalArgumentException.class,() -> ticketSystem.buyTicket(1,in));
+        assertEquals("Age cannot be negative", exception.getMessage());
     }
+
+    @Test
+    @DisplayName("Test display correct value when buying ticket")
+    void testCancelThePurchaseWhenBuyingTicket() throws Exception {
+        // 模拟有效的用户输入
+        String input = "John\nDoe\n30\nMan\njohn.doe@example.com\n0412345678\nA12345678\n0\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        Scanner in = new Scanner(System.in);
+        ticketSystem.buyTicket(1,in);
+        // 验证账单金额是否正确显示
+        assertTrue(outContent.toString().contains("Successfully canceled the purchase."));
+    }
+
 
     @Test
     @DisplayName("Test display correct value when buying ticket")

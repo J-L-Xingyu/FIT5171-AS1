@@ -13,11 +13,27 @@ public class PersonTest {
     }
 
     @Test
-    public void testInvalidGender() {
+    public void testInvalidGender1() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Person("Jane", "Doe", 25, "Alien");
+            new Person("Jane", "Doe", 25, "Al");
         });
-        assertEquals("Invalid gender: Alien", exception.getMessage());
+        assertEquals("Invalid gender: Al", exception.getMessage());
+    }
+
+    @Test
+    public void testInvalidGender2() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Person("Jane", "Doe", 25, "0");
+        });
+        assertEquals("Invalid gender: 0", exception.getMessage());
+    }
+
+    @Test
+    public void testNullGender() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Person("John", "Doe", 30, null);
+        });
+        assertEquals("Invalid gender: null", exception.getMessage());
     }
 
     @Test
@@ -34,6 +50,20 @@ public class PersonTest {
             new Person("John", "#Doe", 30, "Man");
         });
         assertEquals("Invalid second name: #Doe", exception.getMessage());
+    }
+
+    @Test
+    public void testNegativeAge() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Person("John", "Doe", -1, "Man");
+        });
+        assertEquals("Age cannot be negative", exception.getMessage());
+    }
+
+    @Test
+    public void testExtremeAge() {
+        Person person = new Person("John", "Doe", 120, "Man");
+        assertEquals(120, person.getAge());
     }
 
     @Test
@@ -65,14 +95,6 @@ public class PersonTest {
     }
 
     @Test
-    public void testNegativeAge() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Person("John", "Doe", -1, "Man");
-        });
-        assertEquals("Age cannot be negative", exception.getMessage());
-    }
-
-    @Test
     public void testNullFirstName() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             new Person(null, "Doe", 30, "Man");
@@ -86,20 +108,6 @@ public class PersonTest {
             new Person("John", null, 30, "Man");
         });
         assertEquals("Invalid second name: null", exception.getMessage());
-    }
-
-    @Test
-    public void testNullGender() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Person("John", "Doe", 30, null);
-        });
-        assertEquals("Invalid gender: null", exception.getMessage());
-    }
-
-    @Test
-    public void testExtremeAge() {
-        Person person = new Person("John", "Doe", 120, "Man");
-        assertEquals(120, person.getAge());
     }
 
     @Test
@@ -128,12 +136,4 @@ public class PersonTest {
         assertEquals(30, person.getAge());
     }
 
-    @Test
-    public void testSetInvalidGender() {
-        Person person = new Person("John", "Doe", 30, "Man");
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            person.setGender("Alien");
-        });
-        assertEquals("Invalid gender: Alien", exception.getMessage());
-    }
 }

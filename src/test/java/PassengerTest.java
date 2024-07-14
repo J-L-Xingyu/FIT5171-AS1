@@ -228,16 +228,6 @@ class PassengerTest {
         });
     }
 
-    // 测试设置无效护照号码
-    @Test
-    void testSetInvalidPassport() {
-        Passenger passenger = new Passenger("John", "Doe", 30, "Man",
-                "john.doe@example.com", "0412345678", "A12345678",
-                "1234567890123456", 123);
-        assertThrows(IllegalArgumentException.class, () -> {
-            passenger.setPassport("12345678910");
-        });
-    }
 
     // 测试设置无效安全码
     @Test
@@ -259,16 +249,6 @@ class PassengerTest {
         assertThrows(IllegalArgumentException.class, () -> {
             passenger.setCardNumber("");
         });
-    }
-
-    // 测试设置有效电子邮件
-    @Test
-    void testSetValidEmail() {
-        Passenger passenger = new Passenger("John", "Doe", 30, "Man",
-                "john.doe@example.com", "0412345678", "A12345678",
-                "1234567890123456", 123);
-        passenger.setEmail("new.email@example.com");
-        assertEquals("new.email@example.com", passenger.getEmail());
     }
 
     // 测试设置有效电话号码

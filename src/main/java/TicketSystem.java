@@ -44,22 +44,26 @@ public class TicketSystem {
 
                 //and search for city with depart_from as connector city
 
-                String connectCity = depart_to.getDepartFrom();
+                if (depart_to != null) {
+                    String connectCity = depart_to.getDepartFrom();
 
-                //SELECT * from flight where depart_to = '" + connectCity + "' and depart_from = '" + city1+"'"
+                    //SELECT * from flight where depart_to = '" + connectCity + "' and depart_from = '" + city1+"'"
 
-                Flight flightConnectingTwoCities = FlightCollection.getFlightInfo(city1, connectCity);
+                    Flight flightConnectingTwoCities = FlightCollection.getFlightInfo(city1, connectCity);
 
-                if (flightConnectingTwoCities != null) {
-                    System.out.println("There is special way to go there. And it is transfer way, like above. Way №" + counter);
-                    idFirst = depart_to.getFlightID();
-                    idSecond = flightConnectingTwoCities.getFlightID();
+                    if (flightConnectingTwoCities != null) {
+                        System.out.println("There is special way to go there. And it is transfer way, like above. Way №" + counter);
+                        idFirst = depart_to.getFlightID();
+                        idSecond = flightConnectingTwoCities.getFlightID();
+                        counter++;
+                    }
+
                 }
 
-                counter++;
+//                counter++;
 
                 if (counter == 1) {
-                    System.out.println("There is no possible variants.");
+                    System.out.println("There are no possible variants.");
                     return;
                 }
                 // 验证票是否已预订
@@ -121,7 +125,7 @@ public class TicketSystem {
 
         //select ticket where ticket_id="+ticket_id"
         Ticket validTicket = TicketCollection.getTicketInfo(ticket_id);
-        System.out.println(validTicket);
+//        System.out.println(validTicket);
 
         //if there is a valid ticket id was input then we buy it, otherwise show message
         if(validTicket == null) //***
@@ -133,7 +137,7 @@ public class TicketSystem {
             //select flight_id from ticket where ticket_id=" + ticket_id
 
             flight_id = validTicket.getFlight().getFlightID();
-            System.out.println(flight_id);
+//            System.out.println(flight_id);
 
             try
             {
@@ -174,7 +178,7 @@ public class TicketSystem {
                 int purch = in.nextInt();
                 in.nextLine(); // Consume the newline left-over
                 if (purch == 0)
-                {
+                {   System.out.println("Successfully canceled the purchase.");
                     return;
                 } else
                 {
@@ -184,7 +188,7 @@ public class TicketSystem {
 
 //                    int airplane_id = flight.getAirplane().getAirplaneID();
                     Airplane airplane = flight.getAirplane();
-                    System.out.println(airplane);
+//                    System.out.println(airplane);
 
 //                    Airplane airplane = Airplane.getAirPlaneInfo(airplane_id);
 
@@ -361,6 +365,8 @@ public class TicketSystem {
                     System.out.println("Enter your security code:");
                     Integer securityCode = 0;
                     passenger.setSecurityCode(securityCode);
+
+                    showTicket();
 
                 }
             } catch (PatternSyntaxException patternException)
