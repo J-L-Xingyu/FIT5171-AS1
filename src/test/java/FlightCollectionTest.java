@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 class FlightCollectionTest {
@@ -49,33 +48,36 @@ class FlightCollectionTest {
     }
 
 
-
     @Test
     public void testGetFlightInfoByCities() {
-        Flight flight = FlightCollection.getFlightInfo("Beijing", "Shanghai");
-        assertNotNull(flight);
-        assertEquals("Beijing", flight.getDepartFrom());
-        assertEquals("Shanghai", flight.getDepartTo());
+        Flight flight1 = FlightCollection.getFlightInfo("Beijing", "Guangzhou");
+        Flight flight2 = FlightCollection.getFlightInfo("Beijing", "Shanghai");
+        assertEquals(null,flight1);
+        assertEquals("Beijing", flight2.getDepartFrom());
+        assertEquals("Shanghai", flight2.getDepartTo());
     }
 
     @Test
     public void testGetFlightInfoByInvalidCities() {
-        assertThrows(IllegalArgumentException.class, () ->FlightCollection.getFlightInfo("Beijing", "Guangzhou"));
-        assertThrows(IllegalArgumentException.class, () ->FlightCollection.getFlightInfo("Guangzhou"));
+        assertEquals(null,FlightCollection.getFlightInfo("Beijing", "Guangzhou"));
+        assertDoesNotThrow(() ->FlightCollection.getFlightInfo("Guangzhou"));
     }
 
     @Test
     public void testGetFlightInfoByCity() {
-        Flight flight = FlightCollection.getFlightInfo("Tokyo");
-        assertNotNull(flight);
-        assertEquals("Tokyo", flight.getDepartTo());
+        Flight flight1 = FlightCollection.getFlightInfo("Tokyo");
+        Flight flight2 = FlightCollection.getFlightInfo("Nanjing");
+        assertEquals(null,flight2);
+        assertEquals("Tokyo", flight1.getDepartTo());
     }
 
     @Test
     public void testGetFlightInfoById() {
-        Flight flight = FlightCollection.getFlightInfo(300);
-        assertNotNull(flight);
-        assertEquals(300, flight.getFlightID());
+        Flight flight1 = FlightCollection.getFlightInfo(300);
+        Flight flight2 = FlightCollection.getFlightInfo(1000);
+        assertEquals(null,flight2);
+        assertNotNull(flight1);
+        assertEquals(300, flight1.getFlightID());
     }
 }
 

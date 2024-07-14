@@ -41,7 +41,8 @@ public class FlightCollection {
                 return flight;
             }
         }
-        throw new IllegalArgumentException("can not find direct flight from"+ city1+ "to"+ city2+ " flight");
+        System.out.println("can not find direct flight from "+ city1+ " to "+ city2+ " flight");
+        return null;
     }
     
     public static Flight getFlightInfo(String city) {
@@ -49,11 +50,12 @@ public class FlightCollection {
 		// 查找到达城市为city的航班
         for (Flight flight : flights) {
             if (flight.getDepartTo().equals(city)) {
-				System.out.println("Get the flight info: "+ flight.toString());
+                System.out.println("Get the flight info: " + flight.toString());
                 return flight;
             }
         }
-    	throw new IllegalArgumentException("can not find depart_to = "+city + " flight");
+        System.out.println("can not find depart_to = "+city + " flight");
+        return null;
 
     }
     public static Flight getFlightInfo(int flight_id) {
@@ -64,7 +66,8 @@ public class FlightCollection {
                 return flight;
             }
         }
-		throw new IllegalArgumentException("can not find flight_id = "+flight_id + " flight");
+        System.out.println("can not find flight_id = "+ flight_id + " flight");
+        return null;
     }
 
 }
