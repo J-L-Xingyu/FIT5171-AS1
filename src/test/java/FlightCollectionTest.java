@@ -67,8 +67,10 @@ class FlightCollectionTest {
     public void testGetFlightInfoByCity() {
         Flight flight1 = FlightCollection.getFlightInfo("Tokyo");
         Flight flight2 = FlightCollection.getFlightInfo("Nanjing");
+        Flight flight3 = FlightCollection.getFlightInfo("Shanghai");
         assertEquals(null,flight2);
         assertEquals("Tokyo", flight1.getDepartTo());
+        assertEquals("Shanghai", flight3.getDepartTo());
     }
 
     @Test
