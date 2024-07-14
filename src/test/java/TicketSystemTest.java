@@ -120,7 +120,7 @@ class TicketSystemTest {
     }
 
     @Test
-    @DisplayName("Test display correct value when buying ticket")
+    @DisplayName("Test user can cancel the process when buying ticket")
     void testCancelThePurchaseWhenBuyingTicket() throws Exception {
         // 模拟有效的用户输入
         String input = "John\nDoe\n30\nMan\njohn.doe@example.com\n0412345678\nA12345678\n0\n";
