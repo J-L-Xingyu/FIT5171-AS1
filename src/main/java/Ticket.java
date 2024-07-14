@@ -1,7 +1,5 @@
 //contributed by Qianru Zhong
 
-import java.sql.Timestamp;
-
 public class Ticket
 {
     private int ticket_id;

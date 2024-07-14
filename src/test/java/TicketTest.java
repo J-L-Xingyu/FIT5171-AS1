@@ -17,7 +17,7 @@ class TicketTest {
     private Passenger passenger;
 
     @BeforeEach
-    void setUp() {
+    void setUp() {//在每次测试之前创建
         airplane = new Airplane(1, "Boeing 747",
                 50, 200, 10);
         flight = new Flight(1, "New York", "Los Angeles", "NY123",

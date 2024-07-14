@@ -47,6 +47,7 @@ public class TicketCollection {
 
 	//验证ticket是否有效
 	private static void validateTicket(Ticket ticket) {
+		// Check if the ticket is null
 		if (ticket == null) {
 			throw new IllegalArgumentException("Ticket cannot be null.");
 		}
