@@ -129,7 +129,6 @@ class TicketSystemTest {
         System.setOut(new PrintStream(outContent));
         Scanner in = new Scanner(System.in);
         ticketSystem.buyTicket(1,in);
-        // 验证账单金额是否正确显示
         assertTrue(outContent.toString().contains("Successfully canceled the purchase."));
     }
 
