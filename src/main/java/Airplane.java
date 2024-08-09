@@ -30,12 +30,10 @@ public class Airplane {
     }
 
     public void setAirplaneModel(String airplaneModel) {
-        if (airplaneModel == null || airplaneModel.isEmpty()) {
-            this.airplaneModel = "";
-        }else {
-            this.airplaneModel = airplaneModel;
+        if (airplaneModel == null || airplaneModel.trim().isEmpty()) {
+            throw new IllegalArgumentException("airplane model cannot be null or empty.");
         }
-
+        this.airplaneModel = airplaneModel;
     }
 
     public int getBusinessSitsNumber() {

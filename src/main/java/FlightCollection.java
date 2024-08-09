@@ -25,9 +25,9 @@ public class FlightCollection {
         if (!set.contains(newFlight.getFlightID())) {  // 通过flightID检查是否已经存在相同的航班
             FlightCollection.flights.add(newFlight);  // 如果不存在，添加到FlightCollection中
             set.add(newFlight.getFlightID());  // 同时添加到HashSet中，保持同步
-        } else {
-            System.out.println("Flight_id = "+newFlight.getFlightID() + " flight  Already existed!");  // 输出已存在航班信息
-        }
+        } // {
+            //System.out.println("Flight_id = "+newFlight.getFlightID() + " flight  Already existed!");  // 输出已存在航班信息
+        //}
     }
 }
 
@@ -37,11 +37,11 @@ public class FlightCollection {
 		// 查找从city1到city2的直飞航班
         for (Flight flight : flights) {
             if (flight.getDepartFrom().equals(city1) && flight.getDepartTo().equals(city2)) {
-				System.out.println("Get the flight info: "+ flight.toString());
+				//System.out.println("Get the flight info: "+ flight.toString());
                 return flight;
             }
         }
-        System.out.println("can not find direct flight from "+ city1+ " to "+ city2+ " flight");
+        //System.out.println("can not find direct flight from "+ city1+ " to "+ city2+ " flight");
         return null;
     }
     
@@ -50,11 +50,11 @@ public class FlightCollection {
 		// 查找到达城市为city的航班
         for (Flight flight : flights) {
             if (flight.getDepartTo().equals(city)) {
-                System.out.println("Get the flight info: " + flight.toString());
+               // System.out.println("Get the flight info: " + flight.toString());
                 return flight;
             }
         }
-        System.out.println("can not find depart_to = "+city + " flight");
+        //System.out.println("can not find depart_to = "+city + " flight");
         return null;
 
     }
@@ -66,7 +66,7 @@ public class FlightCollection {
                 return flight;
             }
         }
-        System.out.println("can not find flight_id = "+ flight_id + " flight");
+        //System.out.println("can not find flight_id = "+ flight_id + " flight");
         return null;
     }
 

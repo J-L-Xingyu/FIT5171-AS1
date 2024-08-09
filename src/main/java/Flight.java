@@ -1,9 +1,6 @@
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Objects;
-
 
 public class Flight {
     private int flightID;
@@ -13,31 +10,31 @@ public class Flight {
     private String company;
     private Timestamp dateFrom;
     private Timestamp dateTo;
-    Airplane airplane;
+    private Airplane airplane;
 
-    public Flight(){}
+    public Flight() {
+    }
 
-    public Flight(int flight_id, String departTo, String departFrom, String code, String company, Timestamp dateFrom,Timestamp dateTo,Airplane airplane)
-    {
-            setFlightID(flight_id);
-            setDepartTo(departTo);
-            setDepartFrom(departFrom);
-            setCode(code);
-            setCompany(company);
-            setDateFrom(dateFrom);
-            setDateTo(dateTo);
-            setAirplane(airplane);
+    public Flight(int flightID, String departTo, String departFrom, String code, String company, Timestamp dateFrom, Timestamp dateTo, Airplane airplane) {
+        setFlightID(flightID);
+        setDepartTo(departTo);
+        setDepartFrom(departFrom);
+        setCode(code);
+        setCompany(company);
+        setDateFrom(dateFrom);
+        setDateTo(dateTo);
+        setAirplane(airplane);
     }
 
     public int getFlightID() {
         return flightID;
     }
 
-    public void setFlightID(int flightid) {
-        if (flightid <= 0) {
+    public void setFlightID(int flightID) {
+        if (flightID <= 0) {
             throw new IllegalArgumentException("Flight ID must be greater than 0.");
         }
-        this.flightID = flightid;
+        this.flightID = flightID;
     }
 
     public String getDepartTo() {
@@ -102,51 +99,31 @@ public class Flight {
         this.dateTo = dateTo;
     }
 
-    private void validateDatestamp(Timestamp timestamp, String fieldName) {
-    SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-    dateTimeFormat.setLenient(false);
-    try {
-        // 直接格式化 Timestamp 对象
-        String formattedDate = dateTimeFormat.format(timestamp);
-        // 尝试解析格式化后的字符串，确认其符合预期的日期时间格式
-        dateTimeFormat.parse(formattedDate);
-    } catch (ParseException e) {
-        throw new IllegalArgumentException(fieldName + " must be in the correct format (DD/MM/YY HH:MM:SS).");
-    }
-}
-
-    public void setAirplane(Airplane airplane) {
-        this.airplane = airplane;
-    }
-
     public Airplane getAirplane() {
+        if (airplane == null) {
+            throw new IllegalArgumentException("Invalid Airplane.");
+        }
         return airplane;
     }
 
-    public String toString()
-    {
-            return "Flight{" + airplane.toString() +
-                    ", date to=" +  getDateTo() + ", " + '\'' +
-                    ", date from='" + getDateFrom() + '\'' +
-                    ", depart from='" + getDepartFrom() + '\'' +
-                    ", depart to='" + getDepartTo() + '\'' +
-                    ", code=" + getCode() + '\'' +
-                    ", company=" + getCompany() + '\'' +
-                    ", code=" + getCode() + '\'' +
-                    '}';
+    public void setAirplane(Airplane airplane) {
+        if (airplane == null) {
+            throw new IllegalArgumentException("Airplane cannot be null.");
+        }
+        this.airplane = airplane;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Flight flight = (Flight) o;
-        return flightID == flight.flightID;
+    private void validateDatestamp(Timestamp timestamp, String fieldName) {
+        if (timestamp == null) {
+            throw new IllegalArgumentException(fieldName + " cannot be null.");
+        }
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        dateTimeFormat.setLenient(false);
+        try {
+            String formattedDate = dateTimeFormat.format(timestamp);
+            dateTimeFormat.parse(formattedDate);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException(fieldName + " is not a valid date/time.");
+        }
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(flightID);
-    }
-
 }
