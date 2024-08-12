@@ -11,7 +11,7 @@ public class Ticket //contributed by Qianru Zhong
         setTicket_id(ticket_id);
         setFlight(flight);
         setClassVip(classVip);
-        this.status=false;
+        this.status=false;// changes in Assignment2
         setPassenger(passenger);
         setPrice(price);
     }
@@ -67,9 +67,9 @@ public class Ticket //contributed by Qianru Zhong
     public Passenger getPassenger() {return passenger;}//返回passenger
 
     public void setPassenger(Passenger passenger) {//设置passenger
-        if(passenger == null){throw new IllegalArgumentException("Passenger cannot be null.");}
-        if(passenger.getFirstName() == null){throw new IllegalArgumentException("Invalid first name: " + passenger.getFirstName());}
-        if(passenger.getSecondName() == null){throw new IllegalArgumentException("Invalid second name: " + passenger.getSecondName());}
+        if(passenger == null){throw new IllegalArgumentException("Passenger cannot be null.");}// changes in Assignment2
+        if(passenger.getFirstName() == null){throw new IllegalArgumentException("Invalid first name: " + passenger.getFirstName());}// changes in Assignment2
+        if(passenger.getSecondName() == null){throw new IllegalArgumentException("Invalid second name: " + passenger.getSecondName());}// changes in Assignment2
         if(passenger.getGender() == null){throw new IllegalArgumentException("Invalid gender: "+ passenger.getGender());}
         this.passenger = passenger;
     }

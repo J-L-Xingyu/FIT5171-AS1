@@ -6,8 +6,8 @@ public class TicketCollection {
 	public static ArrayList<Ticket> getTickets() {return new ArrayList<>(tickets);}//获得目前的ticket list
 
 	public static void addTicket(Ticket ticket) {//添加ticket
-		if (ticket == null) {throw new IllegalArgumentException("Ticket cannot be null.");}
-		for (Ticket existingTicket : tickets) {
+		if (ticket == null) {throw new IllegalArgumentException("Ticket cannot be null.");}// changes in Assignment2
+		for (Ticket existingTicket : tickets) {// changes in Assignment2
 			if (existingTicket.getTicket_id() == ticket.getTicket_id()) {
 				throw new IllegalArgumentException("Ticket ID " + ticket.getTicket_id() + " already exists.");}
 		}
@@ -15,7 +15,7 @@ public class TicketCollection {
 	}
 
 	public static void addTickets(ArrayList<Ticket> tickets_db) {//添加ticket list
-		for (Ticket ticket : tickets_db) {
+		for (Ticket ticket : tickets_db) {// changes in Assignment2
 			if (ticket == null) {throw new IllegalArgumentException("Ticket cannot be null.");}
 		}
 		tickets.addAll(tickets_db);
