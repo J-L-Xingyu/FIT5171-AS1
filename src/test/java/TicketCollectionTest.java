@@ -225,7 +225,7 @@ class TicketCollectionTest {
         assertEquals("Airline company cannot be empty.", exception8.getMessage());
 
         //在TicketCollectionTest类中验证了Flight的Departure time字段的有效性
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(new Ticket(1, 1000,
                     new Flight(1, "New York", "Los Angeles", "NY123", "Monash",
                             null, Timestamp.valueOf("2024-07-08 12:00:00"), airplane)
@@ -233,7 +233,7 @@ class TicketCollectionTest {
         });
 
         //在TicketCollectionTest类中验证了Flight的arriving time字段的有效性
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             TicketCollection.addTicket(new Ticket(1, 1000,
                     new Flight(1, "New York", "Los Angeles", "NY123", "Monash",
                             Timestamp.valueOf("2024-07-08 10:00:00"), null, airplane)

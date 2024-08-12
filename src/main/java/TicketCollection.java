@@ -1,69 +1,38 @@
-//contributed by Qianru Zhong
-
-import java.util.ArrayList;
+import java.util.ArrayList;//contributed by Qianru Zhong
 
 public class TicketCollection {
-
 	private static ArrayList<Ticket> tickets = new ArrayList<>();
 
-	//获得目前的ticket list
-	public static ArrayList<Ticket> getTickets() {
-		return new ArrayList<>(tickets);
-	}
+	public static ArrayList<Ticket> getTickets() {return new ArrayList<>(tickets);}//获得目前的ticket list
 
-	//添加ticket
-	public static void addTicket(Ticket ticket) {
-		validateTicket(ticket);
+	public static void addTicket(Ticket ticket) {//添加ticket
+		if (ticket == null) {throw new IllegalArgumentException("Ticket cannot be null.");}
+		for (Ticket existingTicket : tickets) {
+			if (existingTicket.getTicket_id() == ticket.getTicket_id()) {
+				throw new IllegalArgumentException("Ticket ID " + ticket.getTicket_id() + " already exists.");}
+		}
 		tickets.add(ticket);
 	}
 
-	//添加ticket list
-	public static void addTickets(ArrayList<Ticket> tickets_db) {
+	public static void addTickets(ArrayList<Ticket> tickets_db) {//添加ticket list
 		for (Ticket ticket : tickets_db) {
-			validateTicket(ticket);
+			if (ticket == null) {throw new IllegalArgumentException("Ticket cannot be null.");}
 		}
 		tickets.addAll(tickets_db);
 	}
 
-	//展示所有ticket信息
-	public static void getAllTickets() {
-		//display all available tickets from the Ticket collection
-		for (Ticket ticket : tickets) {
-			System.out.println(ticket.toString());
-		}
+	public static void getAllTickets() {//展示所有ticket信息
+		for (Ticket ticket : tickets) {System.out.println(ticket.toString());}
 	}
 
-	//展示某张ticket信息
-	public static Ticket getTicketInfo(int ticket_id) {
-		//SELECT a ticket where ticket id = ticket_id
+	public static Ticket getTicketInfo(int ticket_id) {//展示某张ticket信息
 		for (Ticket ticket : tickets) {
-			if (ticket.getTicket_id() == ticket_id) {
-				return ticket;
-			}
+			if (ticket.getTicket_id() == ticket_id) {return ticket;}
 		}
 		return null;// or throw an exception if preferred
-
 	}
 
-	//验证ticket是否有效
-	private static void validateTicket(Ticket ticket) {
-		// Check if the ticket is null
-		if (ticket == null) {
-			throw new IllegalArgumentException("Ticket cannot be null.");
-		}
-
-		// Check if the ticket_id already exists in the collection
-		for (Ticket existingTicket : tickets) {
-			if (existingTicket.getTicket_id() == ticket.getTicket_id()) {
-				throw new IllegalArgumentException("Ticket ID " + ticket.getTicket_id() + " already exists.");
-			}
-		}
-	}
-
-	//清除ticket collection
 	public static void clearTickets() {
 		tickets.clear();
-	}
-
-
+	}//清除ticket collection
 }

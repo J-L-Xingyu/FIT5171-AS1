@@ -163,7 +163,7 @@ class TicketTest {
         assertEquals("Airline company cannot be empty.", exception4.getMessage());
 
         //在TicketTest类中验证了Departure time的有效性
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             new Ticket(1, 1000,
                     new Flight(1, "New York", "Los Angeles", "NY123", "Monash",
                     null, Timestamp.valueOf("2024-07-08 12:00:00"), airplane)
@@ -171,7 +171,7 @@ class TicketTest {
         });
 
         //在TicketTest类中验证了arriving time的有效性
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             new Ticket(1, 1000,
                     new Flight(1, "New York", "Los Angeles", "NY123", "Monash",
                     Timestamp.valueOf("2024-07-08 10:00:00"), null, airplane)
@@ -371,4 +371,35 @@ class TicketTest {
         ticket.setPrice(basePrice);
         assertEquals(expectedPrice, ticket.getPrice());
     }
+
+    //assignment 2 increase the following test case 1
+    @Test
+    @DisplayName("Test the toString method of Ticket class.")
+    void testToString() {
+        Ticket ticket = new Ticket(1, 1000, flight, true, passenger);
+        String expectedString = "Ticket{\n" +
+                "Price=1000KZT, \n" +
+                flight.toString() + "\n" +
+                "Vip status=true\n" +
+                passenger.toString() + "\n" +
+                "Ticket was purchased=false\n}";
+        assertEquals(expectedString, ticket.toString(), "Ticket information should be displayed correctly");
+    }
+
+    //assignment 2 increase the following test case 2
+    @Test
+    @DisplayName("Test ticket status change triggers price recalculation.")
+    void testTicketStatusChangeTriggersPriceRecalculation() {
+        Ticket ticket = new Ticket(1, 1000, flight, true, passenger);
+        passenger.setAge(30); // No discount
+        ticket.setPrice(1000); // Initial price
+
+        ticket.setTicketStatus(true);
+        assertEquals(1120, ticket.getPrice(), "Price should be 1120 after applying 12% service tax when status is true");
+
+        ticket.setTicketStatus(false);
+        ticket.setPrice(1000);
+        assertEquals(1000, ticket.getPrice(), "Price should revert to original 1000 when status is false");
+    }
+
 }
