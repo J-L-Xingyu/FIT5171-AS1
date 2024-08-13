@@ -1,3 +1,4 @@
+// contribute by Huiyi Chen
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,7 +41,7 @@ void testValidCrewSitsNumber() {
     @Test
     void testInvalidBusinessSitsNumber() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new Airplane(1, "Boeing 747", 350, 200, 10);
+            new Airplane(1, "Boeing 747", 301, 200, 10);
         }, "Business Seats Number range test failed - should throw exception");
     }
 
