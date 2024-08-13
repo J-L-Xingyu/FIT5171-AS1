@@ -20,7 +20,8 @@ class TicketSystemTest {
     void setUp() {
         ticketSystem = new TicketSystem();
         // 初始化测试环境，清空flights集合
-        FlightCollection.flights.clear();
+        //FlightCollection.flights.clear();
+        FlightCollection.clearAll();
         TicketCollection.clearTickets();
         // 假设有几个有效的航班数据
         ArrayList<Flight> newFlights = new ArrayList<>();

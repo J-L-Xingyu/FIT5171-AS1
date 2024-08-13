@@ -1,8 +1,13 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,7 +16,7 @@ class FlightCollectionTest {
     @BeforeEach
     void setUp() {
         // 初始化测试环境，清空flights集合
-        FlightCollection.flights.clear();
+        FlightCollection.clearAll();
 
         // 假设有几个有效的航班数据
         ArrayList<Flight> newFlights = new ArrayList<>();
@@ -30,6 +35,36 @@ class FlightCollectionTest {
     @Test
     public void testAddFlights() {
         assertEquals(3, FlightCollection.getFlights().size());
+    }
+
+    @Test
+    void testPrintFlights() {
+        // 重定向System.out
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outContent));
+
+        try {
+            // 创建航班数据并添加到ArrayList
+            Airplane airplane = new Airplane(1, "Boeing 747", 50, 200, 10);
+            Timestamp dateFrom = DateUtils.createTimestamp("01/01/23 12:00:00");
+            Timestamp dateTo = DateUtils.createTimestamp("02/01/23 12:00:00");
+            Flight flight1 = new Flight(100, "Tokyo", "New York", "AB111", "Delta", dateFrom, dateTo, airplane);
+            Flight flight2 = new Flight(200, "Shanghai", "Beijing", "AB222", "Delta", dateFrom, dateTo, airplane);
+            ArrayList<Flight> flights = new ArrayList<>();
+            flights.add(flight1);
+            flights.add(flight2);
+
+            // 调用print方法
+            FlightCollection.print(flights);
+
+            // 验证输出
+            String expectedOutput = flight1.toString() + System.lineSeparator() + flight2.toString() + System.lineSeparator();
+            assertEquals(expectedOutput, outContent.toString());
+        } finally {
+            // 恢复System.out
+            System.setOut(originalOut);
+        }
     }
 
     @Test
@@ -81,5 +116,5 @@ class FlightCollectionTest {
         assertNotNull(flight1);
         assertEquals(300, flight1.getFlightID());
     }
-}
 
+}

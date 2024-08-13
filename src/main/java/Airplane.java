@@ -1,4 +1,8 @@
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 public class Airplane {
+    private static final Logger logger = Logger.getLogger(Airplane.class.getName());
     private int airplaneID;
     private String airplaneModel;
     private int businessSitsNumber;
@@ -20,6 +24,7 @@ public class Airplane {
 
     public void setAirplaneID(int airplaneID) {
         if (airplaneID <= 0) {
+            logger.log(Level.SEVERE, "Invalid airplane ID: {0}", airplaneID);
             throw new IllegalArgumentException("airplane ID must be greater than 0.");
         }
         this.airplaneID = airplaneID;
@@ -31,6 +36,7 @@ public class Airplane {
 
     public void setAirplaneModel(String airplaneModel) {
         if (airplaneModel == null || airplaneModel.trim().isEmpty()) {
+            logger.log(Level.SEVERE, "Airplane model cannot be null or empty.");
             throw new IllegalArgumentException("airplane model cannot be null or empty.");
         }
         this.airplaneModel = airplaneModel;
@@ -64,6 +70,7 @@ public class Airplane {
 
     public void setCrewSitsNumber(int crewSitsNumber) {
         if (crewSitsNumber < 1 || crewSitsNumber > 300) {
+            logger.log(Level.SEVERE, "Crew seats number must be in the range [1, 300]: {0}", crewSitsNumber);
             throw new IllegalArgumentException("Crew seats number must be in the range [1, 300]");
         }
         this.crewSitsNumber = crewSitsNumber;
