@@ -66,4 +66,16 @@ public class FlightCollection {
         flightsByDepartFrom.clear();
         flightsByDepartTo.clear();
     }
+
+    public static Map<Integer, Flight> getFlightByIdMap() {
+        return flightByIdMap;
+    }
+
+    public static Map<String, List<Flight>> getFlightsByDepartFrom() {
+        return flightsByDepartFrom;
+    }
+
+    public static Map<String, List<Flight>> getFlightsByDepartTo() {
+        return flightsByDepartTo;
+    }
 }

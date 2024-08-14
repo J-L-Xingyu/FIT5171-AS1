@@ -6,6 +6,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -114,6 +116,42 @@ class FlightCollectionTest {
         assertEquals(null,flight2);
         assertNotNull(flight1);
         assertEquals(300, flight1.getFlightID());
+    }
+
+    @Test
+    public void testClearAll() {
+        FlightCollection.clearAll();
+        assertTrue(FlightCollection.getFlights().isEmpty());
+        assertTrue(FlightCollection.getFlightByIdMap().isEmpty());
+        assertTrue(FlightCollection.getFlightsByDepartFrom().isEmpty());
+        assertTrue(FlightCollection.getFlightsByDepartTo().isEmpty());
+    }
+
+    @Test
+    public void testGetFlightByIdMap() {
+        Map<Integer, Flight> flightByIdMap = FlightCollection.getFlightByIdMap();
+        assertNotNull(flightByIdMap);
+        assertEquals(3, flightByIdMap.size());
+        assertTrue(flightByIdMap.containsKey(100));
+        assertTrue(flightByIdMap.containsKey(200));
+        assertTrue(flightByIdMap.containsKey(300));
+    }
+
+    @Test
+    public void testGetFlightsByDepartFrom() {
+        Map<String, List<Flight>> flightsByDepartFrom = FlightCollection.getFlightsByDepartFrom();
+        assertNotNull(flightsByDepartFrom);
+        assertTrue(flightsByDepartFrom.containsKey("New York"));
+        assertTrue(flightsByDepartFrom.containsKey("Beijing"));
+        assertTrue(flightsByDepartFrom.containsKey("Tokyo"));
+    }
+
+    @Test
+    public void testGetFlightsByDepartTo() {
+        Map<String, List<Flight>> flightsByDepartTo = FlightCollection.getFlightsByDepartTo();
+        assertNotNull(flightsByDepartTo);
+        assertTrue(flightsByDepartTo.containsKey("Shanghai"));
+        assertTrue(flightsByDepartTo.containsKey("Tokyo"));
     }
 
 }
