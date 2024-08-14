@@ -119,7 +119,7 @@ public class Flight {
             throw new IllegalArgumentException(fieldName + " cannot be null.");
         }
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-        dateTimeFormat.setLenient(false);
+        //dateTimeFormat.setLenient(false);
         try {
             String formattedDate = dateTimeFormat.format(timestamp);
             dateTimeFormat.parse(formattedDate);
