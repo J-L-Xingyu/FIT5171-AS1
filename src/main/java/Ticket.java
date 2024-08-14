@@ -32,8 +32,14 @@ public class Ticket //contributed by Qianru Zhong
     public void setPrice(int price) {//设置价格
         if (price < 0){throw new IllegalArgumentException("Price must not be negative.");}
         this.price = price;
-        applyDiscount(); //changes price of the ticket according to the age category of passenger
-        if (status){serviceTax();} //changes price by adding service tax to the ticket
+        //applyDiscount(); //changes price of the ticket according to the age category of passenger
+        if (passenger != null) {
+            applyDiscount(); // 确保 passenger 已设置
+        }
+        if (status) {
+            serviceTax(); // 仅在 status 为 true 时应用税率
+        }
+        //if (status){serviceTax();} //changes price by adding service tax to the ticket
     }
 
     public void applyDiscount(){//增加的折扣函数

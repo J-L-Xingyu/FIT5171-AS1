@@ -331,4 +331,35 @@ class PassengerTest {
         });
         assertEquals("Invalid gender: Alien", exception.getMessage());
     }
+
+    @Test
+    void testSetSecurityCodeWithZero() {
+        Passenger passenger = new Passenger("John", "Doe", 30, "Man",
+                "john.doe@example.com", "0412345678", "A12345678",
+                "1234567890123456", 123);
+        assertThrows(IllegalArgumentException.class, () -> {
+            passenger.setSecurityCode(0);
+        });
+    }
+
+    @Test
+    void testSetSecurityCodeWithNegativeValue() {
+        Passenger passenger = new Passenger("John", "Doe", 30, "Man",
+                "john.doe@example.com", "0412345678", "A12345678",
+                "1234567890123456", 123);
+        assertThrows(IllegalArgumentException.class, () -> {
+            passenger.setSecurityCode(-1);
+        });
+    }
+
+    @Test
+    void testToStringMethod() {
+        Passenger passenger = new Passenger("John", "Doe", 30, "Man",
+                "john.doe@example.com", "0412345678", "A12345678",
+                "1234567890123456", 123);
+        String expectedOutput = "Passenger{ Fullname= John Doe ,email='john.doe@example.com', phoneNumber='0412345678', passport='A12345678'}";
+        assertEquals(expectedOutput, passenger.toString());
+    }
+
+
 }

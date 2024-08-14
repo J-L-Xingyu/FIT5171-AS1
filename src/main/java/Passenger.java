@@ -1,4 +1,6 @@
+import java.util.logging.Logger;
 public class Passenger extends Person {
+    private static final Logger logger = Logger.getLogger(Passenger.class.getName());
     private String email;
     private String phoneNumber;
     private String cardNumber;
@@ -59,8 +61,16 @@ public class Passenger extends Person {
         return email;
     }
 
+//    public void setEmail(String email) {
+//        if (!isValidEmail(email)) {
+//            throw new IllegalArgumentException("Invalid email format.");
+//        }
+//        this.email = email;
+//    }
+
     public void setEmail(String email) {
         if (!isValidEmail(email)) {
+            logger.severe("Invalid email format: " + email);  // 记录无效输入
             throw new IllegalArgumentException("Invalid email format.");
         }
         this.email = email;

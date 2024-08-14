@@ -31,9 +31,9 @@ public class PersonTest {
     @Test
     public void testNullGender() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Person("John", "Doe", 30, null);
+            new Person("John", "Doe", 30, "");
         });
-        assertEquals("Invalid gender: null", exception.getMessage());
+        assertEquals("Invalid gender: ", exception.getMessage());
     }
 
     @Test
@@ -41,7 +41,7 @@ public class PersonTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             new Person("1John", "Doe", 30, "Man");
         });
-        assertEquals("Invalid first name: 1John", exception.getMessage());
+        assertEquals("Invalid first name: 1John. First name must only contain letters and cannot be null.", exception.getMessage());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class PersonTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             new Person("John", "Doe", -1, "Man");
         });
-        assertEquals("Age cannot be negative", exception.getMessage());
+        assertEquals("Age cannot be negative. Received age: -1", exception.getMessage());
     }
 
     @Test
@@ -99,7 +99,7 @@ public class PersonTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             new Person(null, "Doe", 30, "Man");
         });
-        assertEquals("Invalid first name: null", exception.getMessage());
+        assertEquals("Invalid first name: null. First name must only contain letters and cannot be null.", exception.getMessage());
     }
 
     @Test
@@ -134,6 +134,25 @@ public class PersonTest {
         assertEquals("Man", person.getGender());
         person.setAge(30);
         assertEquals(30, person.getAge());
+    }
+
+    @Test
+    public void testToString() {
+        Person person = new Person("John", "Doe", 30, "Man");
+        String expectedOutput = "Person{firstName='John', secondName='Doe', age=30, gender='Man'}";
+        assertEquals(expectedOutput, person.toString());
+    }
+
+    @Test
+    public void testZeroAgeBoundary() {
+        Person person = new Person("John", "Doe", 0, "Man");
+        assertEquals(0, person.getAge());
+    }
+
+    @Test
+    public void testPositiveAgeBoundary() {
+        Person person = new Person("John", "Doe", 1, "Man");
+        assertEquals(1, person.getAge());
     }
 
 }

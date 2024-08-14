@@ -1,3 +1,5 @@
+import java.util.logging.Logger;
+
 public class Person {
     private String firstName;  // 名字
     private String secondName;  // 姓氏
@@ -50,12 +52,21 @@ public class Person {
     }
 
     // 设置年龄
+//    public void setAge(int age) {
+//        if (age < 0) {
+//            throw new IllegalArgumentException("Age cannot be negative");  // 年龄不能为负数
+//        }
+//        this.age = age;
+//    }
+    //If an invalid age is provided, the error is logged before throwing an exception
     public void setAge(int age) {
         if (age < 0) {
-            throw new IllegalArgumentException("Age cannot be negative");  // 年龄不能为负数
+           // Logger.getAnonymousLogger("Attempted to set negative age: " + age);
+            throw new IllegalArgumentException("Age cannot be negative. Received age: " + age);
         }
         this.age = age;
     }
+
 
     // 获取性别
     public String getGender() {
@@ -76,12 +87,20 @@ public class Person {
     }
 
     // 设置名字并验证
+//    public void setFirstName(String firstName) {
+//        if (firstName == null || !firstName.matches("^[a-zA-Z]+$")) {
+//            throw new IllegalArgumentException("Invalid first name: " + firstName);  // 名字只能包含字母
+//        }
+//        this.firstName = firstName;
+//    }
+//providing a more detailed error message when setting the first name.
     public void setFirstName(String firstName) {
         if (firstName == null || !firstName.matches("^[a-zA-Z]+$")) {
-            throw new IllegalArgumentException("Invalid first name: " + firstName);  // 名字只能包含字母
+            throw new IllegalArgumentException("Invalid first name: " + firstName + ". First name must only contain letters and cannot be null.");
         }
         this.firstName = firstName;
     }
+
 
     // 获取姓氏
     public String getSecondName() {
@@ -106,4 +125,6 @@ public class Person {
                 ", gender='" + gender.getGender() + '\'' +
                 '}';
     }
+
+
 }
