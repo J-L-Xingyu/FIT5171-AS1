@@ -207,7 +207,7 @@ class TicketTest {
                     "Man", "john.doe@example.com", "0456789123",
                     "A12345678", "1234567890123456", 123));
         });
-        assertEquals("Invalid first name: John3", exception1.getMessage());
+        assertEquals("Invalid first name: John3. First name must only contain letters and cannot be null.", exception1.getMessage());
 
         //验证了passenger的second name的有效性
         IllegalArgumentException exception2 = assertThrows(IllegalArgumentException.class, () -> {
@@ -225,7 +225,7 @@ class TicketTest {
                     "Man", "john.doe@example.com", "0456789123",
                     "A12345678", "1234567890123456", 123));
         });
-        assertEquals("Age cannot be negative", exception3.getMessage());
+        assertEquals("Age cannot be negative. Received age: -1", exception3.getMessage());
 
         //验证了passenger的gender的有效性
         IllegalArgumentException exception4 = assertThrows(IllegalArgumentException.class, () -> {
